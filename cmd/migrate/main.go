@@ -1,6 +1,6 @@
 package main
 
-import "github.com/golang-migrate/migrate/v4/internal/cli"
+import "github.com/deepakd10/migrate/v4/internal/cli"
 
 func main() {
 	cli.Main(Version)
