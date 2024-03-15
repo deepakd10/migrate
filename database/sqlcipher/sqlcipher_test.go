@@ -8,9 +8,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/golang-migrate/migrate/v4"
-	dt "github.com/golang-migrate/migrate/v4/database/testing"
-	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/deepakd10/migrate/v4"
+	dt "github.com/deepakd10/migrate/v4/database/testing"
+	_ "github.com/deepakd10/migrate/v4/source/file"
 	_ "github.com/mutecomm/go-sqlcipher/v4"
 )
 

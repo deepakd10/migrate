@@ -12,7 +12,7 @@ import (
 
 	"golang.org/x/oauth2"
 
-	"github.com/golang-migrate/migrate/v4/source"
+	"github.com/deepakd10/migrate/v4/source"
 	"github.com/google/go-github/v39/github"
 )
 
