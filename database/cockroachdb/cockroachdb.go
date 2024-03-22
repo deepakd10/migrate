@@ -8,6 +8,7 @@ import (
 	nurl "net/url"
 	"regexp"
 	"strconv"
+	"time"
 
 	"github.com/cockroachdb/cockroach-go/v2/crdb"
 	"github.com/deepakd10/migrate/v4"
@@ -218,7 +219,12 @@ func (c *CockroachDb) Run(migration io.Reader) error {
 
 	// run migration
 	query := string(migr[:])
-	if _, err := c.db.Exec(query); err != nil {
+	fmt.Println("Query ", query)
+	startTime := time.Now()
+	_, err = c.db.Exec(query)
+	endTime := time.Now()
+	fmt.Println("Actual Migration took: ", endTime.Sub(startTime))
+	if err != nil {
 		return database.Error{OrigErr: err, Err: "migration failed", Query: migr}
 	}
 
