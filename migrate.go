@@ -760,9 +760,9 @@ func (m *Migrate) runMigrations(ret <-chan interface{}) error {
 			// log either verbose or normal
 			if m.Log != nil {
 				if m.Log.Verbose() {
-					m.logPrintf("Finished %v (read %v, ran %v)\n", migr.LogString(), readTime, runTime)
+					m.logPrintf("Finished %v (,read, %v, ran, %v,)\n", migr.LogString(), readTime.Seconds(), runTime.Seconds())
 				} else {
-					m.logPrintf("%v (%v)\n", migr.LogString(), readTime+runTime)
+					m.logPrintf("Finished migration for %v. Migration run time: %v\n", migr.LogString(), runTime)
 				}
 			}
 
