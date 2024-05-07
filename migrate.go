@@ -7,6 +7,7 @@ package migrate
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"sync"
 	"time"
@@ -743,7 +744,8 @@ func (m *Migrate) runMigrations(ret <-chan interface{}) error {
 
 			if migr.Body != nil {
 				m.logVerbosePrintf("Read and execute %v\n", migr.LogString())
-				if err := m.databaseDrv.Run(migr.BufferedBody); err != nil {
+				var br io.Reader = migr.BufferedBody
+				if err := m.databaseDrv.Run(br); err != nil {
 					return err
 				}
 			}
@@ -765,7 +767,12 @@ func (m *Migrate) runMigrations(ret <-chan interface{}) error {
 					m.logPrintf("Finished migration for %v. Migration run time: %v\n", migr.LogString(), runTime)
 				}
 			}
-
+			err := migr.BufferedBody.Close()
+			if err != nil {
+				m.logPrintf("Error closing buffered body: %v\n", err)
+			} else {
+				m.logVerbosePrintf("Closed buffered body for \n")
+			}
 		default:
 			return fmt.Errorf("unknown type: %T with value: %+v", r, r)
 		}

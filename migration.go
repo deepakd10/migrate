@@ -30,7 +30,7 @@ type Migration struct {
 	Body io.ReadCloser
 
 	// BufferedBody holds an buffered io.Reader to the underlying Body.
-	BufferedBody io.Reader
+	BufferedBody *io.PipeReader
 
 	// BufferSize defaults to DefaultBufferSize
 	BufferSize uint
