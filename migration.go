@@ -9,7 +9,7 @@ import (
 
 // DefaultBufferSize sets the in memory buffer size (in Bytes) for every
 // pre-read migration (see DefaultPrefetchMigrations).
-var DefaultBufferSize = uint(10000000)
+var DefaultBufferSize = uint(100000)
 
 // Migration holds information about a migration.
 // It is initially created from data coming from the source and then
@@ -31,7 +31,7 @@ type Migration struct {
 	Body io.ReadCloser
 
 	// BufferedBody holds an buffered io.Reader to the underlying Body.
-	BufferedBody io.Reader
+	BufferedBody *io.PipeReader
 
 	// BufferSize defaults to DefaultBufferSize
 	BufferSize uint
