@@ -7,6 +7,7 @@ package migrate
 import (
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"sync"
 	"time"
@@ -735,6 +736,7 @@ func (m *Migrate) runMigrations(ret <-chan interface{}) error {
 
 		case *Migration:
 			migr := r
+			var br io.Reader = migr.BufferedBody
 
 			// set version with dirty state
 			if err := m.databaseDrv.SetVersion(migr.TargetVersion, true); err != nil {
@@ -743,7 +745,7 @@ func (m *Migrate) runMigrations(ret <-chan interface{}) error {
 
 			if migr.Body != nil {
 				m.logVerbosePrintf("Read and execute %v\n", migr.LogString())
-				if err := m.databaseDrv.Run(migr.BufferedBody); err != nil {
+				if err := m.databaseDrv.Run(br); err != nil {
 					return err
 				}
 			}
@@ -756,6 +758,10 @@ func (m *Migrate) runMigrations(ret <-chan interface{}) error {
 			endTime := time.Now()
 			readTime := migr.FinishedReading.Sub(migr.StartedBuffering)
 			runTime := endTime.Sub(migr.FinishedReading)
+
+			if err := migr.BufferedBody.Close(); err != nil {
+				return err
+			}
 
 			// log either verbose or normal
 			if m.Log != nil {
